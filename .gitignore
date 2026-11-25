@@ -1,0 +1,13 @@
+__pycache__/
+.venv/
+*.pyc
+models/*.onnx
+!models/lab6-custom.onnx
+models/*.pt
+models/scikit-data/
+models/lfw-70.npz
+training/dataset/
+training/runs/
+.semantic-deps/
+.training-deps/
+report/screenshots/browser-metrics.json

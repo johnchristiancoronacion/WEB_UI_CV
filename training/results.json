@@ -1,0 +1,42 @@
+{
+  "dataset": "Synthetic classroom objects",
+  "classes": [
+    "blue-card",
+    "orange-badge"
+  ],
+  "splits": {
+    "train": 80,
+    "val": 16,
+    "test": 16
+  },
+  "seed": 106,
+  "epochs": 5,
+  "image_size": 192,
+  "validation": {
+    "precision": 0.992189,
+    "recall": 1.0,
+    "map50": 0.995,
+    "map50_95": 0.920638
+  },
+  "test": {
+    "precision": 0.98996,
+    "recall": 1.0,
+    "map50": 0.995,
+    "map50_95": 0.891701
+  },
+  "sample": {
+    "image": "assets/cards.jpg",
+    "split": "test",
+    "confidence_threshold": 0.25,
+    "detections": [
+      {
+        "class_name": "orange-badge",
+        "confidence": 0.991856
+      },
+      {
+        "class_name": "blue-card",
+        "confidence": 0.991695
+      }
+    ]
+  }
+}

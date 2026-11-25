@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CSST106 Laboratory Report</title>
+  <style>
+    :root {
+      color: #15212d;
+      background: #e8edf0;
+      font: 11pt/1.47 Arial, Helvetica, sans-serif;
+      --ink: #15212d;
+      --muted: #4c5a64;
+      --line: #cad4da;
+      --accent: #a6422c;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    a { color: inherit; }
+    p, figure { margin: 0; }
+    h1, h2 { margin: 0; line-height: 1.1; }
+    h3 { margin: 0 0 0.28rem; font-size: 1rem; }
+    ol { margin: 0; padding-left: 1.26rem; }
+    li + li { margin-top: 0.16rem; }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      max-width: 210mm;
+      margin: 0 auto;
+      padding: 16px 22px;
+    }
+
+    .toolbar button {
+      padding: 8px 14px;
+      border: 1px solid var(--ink);
+      border-radius: 5px;
+      background: var(--ink);
+      color: white;
+      font: inherit;
+      cursor: pointer;
+    }
+
+    .report { display: grid; gap: 6mm; padding: 0 0 7mm; }
+    .sheet {
+      display: flex;
+      flex-direction: column;
+      width: min(100%, 210mm);
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 14mm 15mm 12mm;
+      background: white;
+      box-shadow: 0 2px 12px #15212d20;
+    }
+
+    .cover { gap: 10mm; }
+    .cover h1 { max-width: 11ch; margin: 3.5mm 0 2.5mm; font-size: 38pt; letter-spacing: -0.035em; }
+    .cover .course { font-size: 15pt; }
+    .cover .term { color: var(--muted); }
+    .eyebrow { color: var(--accent); font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+
+    .identification, .metrics { display: grid; margin: 0; }
+    .identification { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4mm 8mm; }
+    .identification label { display: grid; gap: 1mm; }
+    .identification input {
+      min-width: 0;
+      padding: 1mm 0;
+      border: 0;
+      border-bottom: 1px solid var(--muted);
+      border-radius: 0;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    .contents { list-style: none; padding: 0; }
+    .contents li { margin: 0; border-top: 1px solid var(--line); }
+    .contents li:last-child { border-bottom: 1px solid var(--line); }
+    .contents a { display: flex; align-items: baseline; gap: 4mm; padding: 2.4mm 0; text-decoration: none; }
+    .contents a:hover { text-decoration: underline; }
+    .contents .number { min-width: 2.4ch; color: var(--accent); font-variant-numeric: tabular-nums; }
+    .contents .page-number { margin-left: auto; color: var(--muted); }
+    .scope { color: var(--muted); font-size: 0.9rem; }
+
+    .lab { gap: 3.7mm; }
+    .lab header { padding-top: 3.3mm; border-top: 2px solid var(--ink); }
+    .lab h2 { margin-top: 1.1mm; font-size: 25pt; letter-spacing: -0.022em; }
+    .lab-body { display: grid; grid-template-columns: 1.05fr 1fr; gap: 7mm; }
+    .lab-body p + h3 { margin-top: 2.4mm; }
+    .reference { color: var(--muted); font-size: 0.87rem; }
+
+    .evidence img {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 100mm;
+      margin-inline: auto;
+      border: 1px solid var(--line);
+      object-fit: contain;
+      background: #f5f7f8;
+    }
+
+    .evidence figcaption { margin-top: 1mm; color: var(--muted); font-size: 0.9rem; }
+    .evidence .missing-image { margin: 3mm 0; padding: 3mm; border: 1px solid var(--line); }
+    .metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.6mm 5mm; margin-top: 1.5mm; }
+    .metrics:empty { display: none; }
+    .metrics div { padding-top: 1mm; border-top: 1px solid var(--line); overflow-wrap: anywhere; }
+    .metrics dt { color: var(--muted); font-size: 0.79rem; }
+    .metrics dd { margin: 0; font-size: 0.91rem; font-weight: 700; }
+    .page-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 5mm;
+      margin-top: auto;
+      padding-top: 1.5mm;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    @media screen and (max-width: 650px) {
+      .sheet { min-height: 0; padding: 24px 20px; }
+      .lab-body { grid-template-columns: 1fr; gap: 3.7mm; }
+      .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .page-footer { margin-top: 3mm; }
+    }
+
+    @page { size: A4; margin: 12mm 14mm; }
+    @media print {
+      :root { background: white; font-size: 10pt; }
+      .toolbar { display: none; }
+      .report { display: block; padding: 0; }
+      .sheet {
+        width: 100%;
+        min-height: 269mm;
+        padding: 0;
+        margin: 0;
+        break-after: page;
+        box-shadow: none;
+        print-color-adjust: exact;
+      }
+      .sheet:last-child { break-after: auto; }
+      .lab { gap: 3.2mm; }
+      .evidence { break-inside: avoid; }
+      .evidence img { max-height: 85mm; }
+      .page-footer { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <span>Fill in the cover fields before printing, or complete them by hand.</span>
+    <button type="button" onclick="window.print()">Print report</button>
+  </div>
+  <main class="report">
+    <section class="sheet cover" aria-labelledby="report-title">
+      <header>
+        <p class="eyebrow">College of Computer Studies</p>
+        <h1 id="report-title">Laboratory Report</h1>
+        <p class="course">CSST106 · Perception and Computer Vision</p>
+        <p class="term">First semester · Academic year 2026–2027</p>
+      </header>
+
+      <div class="identification">
+        <label>Student name(s) <input type="text" autocomplete="off"></label>
+        <label>Section <input type="text" autocomplete="off"></label>
+        <label>Instructor <input type="text" autocomplete="off"></label>
+        <label>Date submitted <input type="text" autocomplete="off"></label>
+      </div>
+
+      <nav aria-labelledby="contents-title">
+        <h3 id="contents-title">Laboratory activities</h3>
+        <ol class="contents">
+          <li><a href="#lab-01"><span class="number">01</span> Image Manipulation <span class="page-number">2</span></a></li>
+          <li><a href="#lab-02"><span class="number">02</span> Edge Detection <span class="page-number">3</span></a></li>
+          <li><a href="#lab-03"><span class="number">03</span> Histogram Analysis <span class="page-number">4</span></a></li>
+          <li><a href="#lab-04"><span class="number">04</span> SURF Feature Detection <span class="page-number">5</span></a></li>
+          <li><a href="#lab-05"><span class="number">05</span> PCA and Eigenfaces <span class="page-number">6</span></a></li>
+          <li><a href="#lab-06"><span class="number">06</span> YOLO11 Object Detection <span class="page-number">7</span></a></li>
+          <li><a href="#lab-07"><span class="number">07</span> Image Segmentation <span class="page-number">8</span></a></li>
+        </ol>
+      </nav>
+
+      <div class="scope">
+        <p>This report follows the course announcement’s attachment order. The Lab 6 filename refers to YOLOv8 and the exercise itself specifies YOLO11. Results come from the companion Web UI and its training workflow.</p>
+        <p>The Lab 4 and Lab 7 handouts also request handwritten answers on A4 paper.</p>
+      </div>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>1 / 8</span></footer>
+    </section>
+
+    <section class="sheet lab" id="lab-01" data-lab="1" aria-labelledby="title-01">
+      <header><p class="eyebrow">Lab Activity 01</p><h2 id="title-01">Image Manipulation</h2></header>
+      <div class="lab-body">
+        <div>
+          <h3>Objective</h3>
+          <p>Examine how a digital image stores pixel intensities and color channels, then apply basic image operations.</p>
+          <h3>Algorithm and techniques</h3>
+          <p>Represent the color image as a height × width × 3 array and grayscale as a single intensity per pixel. The inspector lists channel values in OpenCV’s blue, green, red (BGR) order. Apply pixel assignment, channel extraction, crop, resize, rotation, and flip.</p>
+        </div>
+        <div>
+          <h3>Procedure</h3>
+          <ol>
+            <li>Load a color image and record its dimensions and array shape.</li>
+            <li>Choose a pixel, read its BGR values, and change its color.</li>
+            <li>Set the crop region and scale. Apply a 90° rotation and inspect the originals and processed views.</li>
+          </ol>
+        </div>
+      </div>
+      <figure class="evidence">
+        <img src="screenshots/lab-01.png" alt="Web UI showing the source image, grayscale conversion, and manipulation outputs." width="1440" height="950">
+        <figcaption>Figure 1. Original, grayscale, and manipulated image views in the Web UI.</figcaption>
+      </figure>
+      <section aria-label="Results"><h3>Results</h3><p data-summary>Run results are awaiting capture.</p><dl class="metrics" data-metrics></dl></section>
+      <section><h3>Conclusion</h3><p data-conclusion>Pixel coordinates and channel values make individual image edits measurable. Cropping, resizing, and rotation change spatial layout, while grayscale reduces each pixel to one intensity value.</p></section>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>2 / 8</span></footer>
+    </section>
+
+    <section class="sheet lab" id="lab-02" data-lab="2" aria-labelledby="title-02">
+      <header><p class="eyebrow">Lab Activity 02</p><h2 id="title-02">Edge Detection</h2></header>
+      <div class="lab-body">
+        <div>
+          <h3>Objective</h3>
+          <p>Compare the Sobel and Canny edge maps produced from the same grayscale image.</p>
+          <h3>Algorithm and techniques</h3>
+          <p>Apply 3 × 3 Gaussian smoothing before running horizontal and vertical Sobel filters. Combine their responses as gradient magnitude. Canny thins gradient responses and links edges using two thresholds.</p>
+        </div>
+        <div>
+          <h3>Procedure</h3>
+          <ol>
+            <li>Open the input image and inspect its grayscale view.</li>
+            <li>Run Sobel and Canny, with Canny thresholds initially set to 100 and 200.</li>
+            <li>Compare the original grayscale image, Sobel magnitude, and Canny map side by side.</li>
+          </ol>
+        </div>
+      </div>
+      <figure class="evidence">
+        <img src="screenshots/lab-02.png" alt="Web UI showing the derivative filters and Canny results." width="1440" height="950">
+        <figcaption>Figure 2. Smoothed source and edge detection results.</figcaption>
+      </figure>
+      <section aria-label="Results"><h3>Results</h3><p data-summary>Run results are awaiting capture.</p><dl class="metrics" data-metrics></dl></section>
+      <section><h3>Conclusion</h3><p data-conclusion>Sobel magnitude gives a graded response and can show wider edges. Canny produces a binary map with thinner boundaries, and its thresholds determine whether weaker detail appears.</p></section>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>3 / 8</span></footer>
+    </section>
+
+    <section class="sheet lab" id="lab-03" data-lab="3" aria-labelledby="title-03">
+      <header><p class="eyebrow">Lab Activity 03</p><h2 id="title-03">Histogram Analysis</h2></header>
+      <div class="lab-body">
+        <div>
+          <h3>Objective</h3>
+          <p>Measure intensity distributions and compare contrast stretching with global and adaptive histogram equalization.</p>
+          <h3>Algorithm and techniques</h3>
+          <p>Linear stretching expands the observed intensity range. Global equalization redistributes intensities using a cumulative histogram, with color processing applied to luminance. CLAHE uses local tiles and limits histogram peaks before equalizing each tile. <a class="reference" href="https://docs.opencv.org/4.x/d5/daf/tutorial_py_histogram_equalization.html">OpenCV histogram equalization</a></p>
+        </div>
+        <div>
+          <h3>Procedure</h3>
+          <ol>
+            <li>Load an image and inspect its grayscale intensity distribution.</li>
+            <li>Run the contrast and equalization methods and compare their images and histograms.</li>
+            <li>Look for recovered detail and amplified noise in flat or dim areas.</li>
+          </ol>
+        </div>
+      </div>
+      <figure class="evidence">
+        <img src="screenshots/lab-03.png" alt="Web UI showing RGB and grayscale histograms and equalized images." width="1440" height="950">
+        <figcaption>Figure 3. Intensity histograms and equalized image views.</figcaption>
+      </figure>
+      <section aria-label="Results"><h3>Results</h3><p data-summary>Run results are awaiting capture.</p><dl class="metrics" data-metrics></dl></section>
+      <section><h3>Conclusion</h3><p data-conclusion>One global mapping can strengthen contrast and amplify noise. CLAHE can reveal detail under uneven lighting while limiting enhancement in each tile. These operations can make features easier to inspect in low-contrast photographs.</p></section>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>4 / 8</span></footer>
+    </section>
+
+    <section class="sheet lab" id="lab-04" data-lab="4" aria-labelledby="title-04">
+      <header><p class="eyebrow">Lab Activity 04</p><h2 id="title-04">SURF Feature Detection</h2></header>
+      <div class="lab-body">
+        <div>
+          <h3>Objective</h3>
+          <p>Detect SURF keypoints and compare how SURF, SIFT, and ORB describe and match local features across two images.</p>
+          <h3>Algorithm and techniques</h3>
+          <p>SURF’s Fast-Hessian detector approximates derivatives with box filters on an integral image. Haar wavelet summaries yield a 64-value descriptor. Upright SURF uses a fixed orientation. Matching uses L2 distance for SURF and SIFT and Hamming distance for ORB. <a class="reference" href="https://doi.org/10.1016/j.cviu.2007.09.014">Bay et al., SURF paper</a></p>
+        </div>
+        <div>
+          <h3>Procedure</h3>
+          <ol>
+            <li>Load two images of the same scene or use the sample with its rotated, scaled copy.</li>
+            <li>Adjust the Hessian threshold and compare oriented SURF with upright SURF.</li>
+            <li>Compare keypoints, descriptor matches, and processing time across SURF, SIFT, and ORB on the same pair.</li>
+          </ol>
+        </div>
+      </div>
+      <figure class="evidence">
+        <img src="screenshots/lab-04.png" alt="Web UI showing local feature analysis and descriptor matching." width="1440" height="950">
+        <figcaption>Figure 4. Local features and image correspondences in the Web UI.</figcaption>
+      </figure>
+      <section aria-label="Results"><h3>Results</h3><p data-summary>Run results are awaiting capture.</p><dl class="metrics" data-metrics></dl></section>
+      <section><h3>Conclusion</h3><p data-conclusion>Raising the Hessian threshold generally reduces the number of keypoints. Descriptors encode local appearance so features can be matched across images. The number of matches and processing time depend on the image pair and detector settings.</p></section>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>5 / 8</span></footer>
+    </section>
+
+    <section class="sheet lab" id="lab-05" data-lab="5" aria-labelledby="title-05">
+      <header><p class="eyebrow">Lab Activity 05</p><h2 id="title-05">PCA and Eigenfaces</h2></header>
+      <div class="lab-body">
+        <div>
+          <h3>Objective</h3>
+          <p>Reduce the dimensionality of face images, visualize eigenfaces, and evaluate identity classification on a held-out portion of Labeled Faces in the Wild (LFW).</p>
+          <h3>Algorithm and techniques</h3>
+          <p>Flatten grayscale faces and center each feature using its training-set mean. Fit randomized PCA on training samples and whiten the scores by dividing each component by its training standard deviation before balanced radial-basis SVM classification.</p>
+        </div>
+        <div>
+          <h3>Procedure</h3>
+          <ol>
+            <li>Load LFW faces with at least 70 examples per person at 0.4 scale, then split 80/20 using seed 42.</li>
+            <li>Fit 150 PCA components, inspect the leading and trailing eigenfaces, and find the component count at 90% explained variance.</li>
+            <li>Compare test precision, recall, and F1, and inspect misclassified faces.</li>
+          </ol>
+        </div>
+      </div>
+      <figure class="evidence">
+        <img src="screenshots/lab-05.png" alt="Web UI showing PCA and eigenface classification results." width="1440" height="950">
+        <figcaption>Figure 5. Eigenfaces and evaluation outputs from the PCA activity.</figcaption>
+      </figure>
+      <section aria-label="Results"><h3>Results</h3><p data-summary>Run results are awaiting capture.</p><dl class="metrics" data-metrics></dl></section>
+      <section><h3>Conclusion</h3><p data-conclusion>Eigenfaces 1–3 highlight face shape, left-to-right lighting, and the central face. Components 148–150 show finer variation around the eyes, nose, mouth, and jaw. Several missed predictions show glasses, glare, or head tilt, which can shift the intensities and locations of facial features. Whitening gives retained scores comparable scales for the SVM’s distance calculations.</p></section>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>6 / 8</span></footer>
+    </section>
+
+    <section class="sheet lab" id="lab-06" data-lab="6" aria-labelledby="title-06">
+      <header><p class="eyebrow">Lab Activity 06</p><h2 id="title-06">YOLO11 Object Detection</h2></header>
+      <div class="lab-body">
+        <div>
+          <h3>Objective</h3>
+          <p>Locate and classify objects with pretrained YOLO11 and evaluate a detector fine-tuned on labeled examples.</p>
+          <h3>Algorithm and techniques</h3>
+          <p>YOLO11n predicts class scores and bounding boxes. The confidence threshold filters low-scoring predictions, and non-maximum suppression reduces duplicate boxes. Custom training uses normalized boxes and a dataset YAML with class names and train/validation paths. <a class="reference" href="https://docs.ultralytics.com/models/yolo11/">Ultralytics YOLO11 documentation</a></p>
+        </div>
+        <div>
+          <h3>Procedure</h3>
+          <ol>
+            <li>Run pretrained inference on an image, video, or webcam frame and inspect class and confidence labels.</li>
+            <li>Use the training script to generate 80 training, 16 validation, and 16 held-out images with blue-card and orange-badge labels. Fine-tune for five CPU epochs at 192 × 192 pixels.</li>
+            <li>Check validation precision and recall and apply the trained checkpoint to a new input.</li>
+          </ol>
+        </div>
+      </div>
+      <figure class="evidence">
+        <img src="screenshots/lab-06.png" alt="Web UI showing bounding boxes and labels from YOLO11 object detection." width="1440" height="950">
+        <figcaption>Figure 6. YOLO11n predictions drawn on the input image.</figcaption>
+      </figure>
+      <section aria-label="Results"><h3>Results</h3><p data-summary>Run results are awaiting capture.</p><dl class="metrics" data-metrics></dl></section>
+      <section><h3>Conclusion</h3><p data-conclusion>Classification labels the whole image. Detection locates and labels individual objects, such as each pedestrian in a street scene. Box training loss fell from 1.044 to 0.333. The high validation and test scores reflect the two synthetic card classes and their generated scenes.</p></section>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>7 / 8</span></footer>
+    </section>
+
+    <section class="sheet lab" id="lab-07" data-lab="7" aria-labelledby="title-07">
+      <header><p class="eyebrow">Lab Activity 07</p><h2 id="title-07">Image Segmentation</h2></header>
+      <div class="lab-body">
+        <div>
+          <h3>Objective</h3>
+          <p>Compare thresholding, region-based, edge-based, and semantic approaches to assigning image pixels to regions.</p>
+          <h3>Algorithm and techniques</h3>
+          <p>Otsu and adaptive thresholding use global and local intensity rules, respectively. Region growing expands from seed pixels and watershed traces boundaries between seeded areas. Canny contours locate closed boundaries. SegFormer-B0 assigns Cityscapes class labels to pixels.</p>
+        </div>
+        <div>
+          <h3>Procedure</h3>
+          <ol>
+            <li>Use a simple high-contrast image for thresholding and a complex image for semantic segmentation.</li>
+            <li>Vary seed settings, then run the region and edge methods on the same image.</li>
+            <li>Compare masks, contours, and class labels. When annotated masks are available, use intersection over union to quantify overlap.</li>
+          </ol>
+        </div>
+      </div>
+      <figure class="evidence">
+        <img src="screenshots/lab-07.png" alt="Web UI showing the source image and segmentation output." width="1440" height="950">
+        <figcaption>Figure 7. Pixel-level segmentation in the Web UI.</figcaption>
+      </figure>
+      <section aria-label="Results"><h3>Results</h3><p data-summary>Run results are awaiting capture.</p><dl class="metrics" data-metrics></dl></section>
+      <section><h3>Conclusion</h3><p data-conclusion>Thresholding is fast but depends on contrast. Region methods use pixel similarity and depend on seed choices. Edge methods outline sharp boundaries and can lose regions when contours are broken. Semantic models label meaningful regions with higher compute cost. The street result shows mixed vehicle labels around the bus.</p></section>
+      <footer class="page-footer"><span>CSST106 Laboratory Report</span><span>8 / 8</span></footer>
+    </section>
+  </main>
+
+  <script src="results.js"></script>
+  <script>
+    for (const activity of document.querySelectorAll('[data-lab]')) {
+      const result = window.labResults?.[activity.dataset.lab];
+      if (result?.summary) activity.querySelector('[data-summary]').textContent = result.summary;
+      if (result?.conclusion) activity.querySelector('[data-conclusion]').textContent = result.conclusion;
+
+      for (const [label, value] of Object.entries(result?.metrics ?? {})) {
+        if (value === undefined || value === null) continue;
+        const term = document.createElement('dt');
+        term.textContent = label;
+        const description = document.createElement('dd');
+        description.textContent = Array.isArray(value) ? value.join(', ') : String(value);
+        const measure = document.createElement('div');
+        measure.append(term, description);
+        activity.querySelector('[data-metrics]').append(measure);
+      }
+    }
+
+    for (const screenshot of document.querySelectorAll('.evidence img')) {
+      function showMissingImage() {
+        const message = document.createElement('p');
+        message.className = 'missing-image';
+        message.textContent = 'The Web UI screenshot for this activity is awaiting capture.';
+        screenshot.replaceWith(message);
+      }
+
+      screenshot.addEventListener('error', showMissingImage, { once: true });
+      if (screenshot.complete && !screenshot.naturalWidth) showMissingImage();
+    }
+  </script>
+</body>
+</html>
