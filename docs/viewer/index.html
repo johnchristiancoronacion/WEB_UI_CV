@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#201935">
+  <title>File preview · CSST106</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="vendor/jszip-3.10.1.min.js" defer></script>
+  <script src="vendor/docx-preview-0.4.1.min.js" defer></script>
+  <script src="preview.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div><a id="back" href="../">Lab handouts</a><h1 id="file-title">File preview</h1></div>
+      <a id="download" class="button" download hidden>Download file</a>
+    </header>
+    <p id="preview-status" role="status">Opening file…</p>
+    <div id="preview"></div>
+  </main>
+</body>
+</html>
